@@ -31,9 +31,9 @@ def integrate(f,dx=1.0):
     
     print np.sum(integral)
     
-    return integral
+    return np.sum(integral)
 
-integrate(range(5),dx=.5)
+integral=integrate(range(5),dx=.5)
 ##
 
 ##function to read discharge.dat, return a list of dates as datetime objects and discharge
@@ -67,11 +67,13 @@ def discharge(fname):
     if make_plot:      
         import matplotlib.pyplot as plt
         plt.plot_date(date_time,discharge,'k-')
+        plt.xlabel('Year')
+        plt.ylabel('Discharge[ft${^3}$/s]')
         plt.show()
     
     return date_time, discharge
     
-discharge('discharge.dat')
+date_time,discharge=discharge('discharge.dat')
 ##
 
                                         
@@ -100,14 +102,16 @@ def drifter(fname):
     
     def get_list(x):
         nx=len(x)
-        sta_list=[x[i][0] for i in range(nx)]
-        sta_name=set(sta_list)
+        sta_name=[x[i][0] for i in range(nx)]
+        sta_list=set(sta_name)
         
-        return sta_name
+        return sta_list
         
+    sta_list=get_list(x)
+
     nx=len(x)
     y=[]
-    for sta in sta_name:
+    for sta in sta_list:
         for ix in range(nx):
             if x[ix][0]==sta:
                 y=np.vstack((x[ix][1],x[ix][2]))
@@ -115,6 +119,8 @@ def drifter(fname):
     
     return tracks
 
-drifter('drifter.dat')
+tracks=drifter('drifter.dat')
+print tracks.keys()
+
 
 ##
